@@ -88,5 +88,10 @@ gsteps <- fitdistr(Data$steps, "gamma",  lower = c(0, 0))
 plot(x, dgamma(x, gsteps$estimate[1], gsteps$estimate[2]))
 
 
-
+# Parte 2.3 Manuel
+set.seed(2021)
+freqs = table(Data$Nation)
+x = seq(0, 1, 0.01)
+bdist <- beta(a = 5, b = 10)
+plot(x, dbeta(x, 5, 10))
 
