@@ -375,3 +375,488 @@ abline(v=var(Data$Age), col="green")
 legend(x="topright", legend = c("Grupo de 30", "Grupo de 50", "Grupo de 100", "Varianza de Age"), fill = c("gold", "red", "blue", "green"))
 
 
+# PARTE 2
+
+# 2.1 Estimación Puntual
+
+# Media y varianza de Data$sleeptime con el conjunto de datos completo
+
+mean(Data$sleeptime)
+var(Data$sleeptime)
+
+# Media y varianza de Data$sleeptime con muestras de 200
+# En el enunciado se utiliza el plural (muestras), pero no se 
+# especifica cuantas, por lo que hemos considerado hacer 10.
+
+stSample <- c()
+
+mean10 <- c()
+
+var10 <- c()
+
+set.seed(1892)
+for(i in 1:10) {
+  stSample <- rbind(stSample, Data$sleeptime[sample(dim(Data)[1],200)])
+  mean10[i] <- mean(stSample[i,])
+  var10[i] <- var(stSample[i,])
+}
+
+# Media y varianza de Data$steps con el conjunto de datos completo
+
+mean(Data$steps)
+var(Data$steps)
+
+# Media y varianza de Data$steps con muestras de 200
+# En el enunciado se utiliza el plural (muestras), pero no se 
+# especifica cuantas, por lo que hemos considerado hacer 20.
+
+stepsSample <- c()
+
+mean20 <- c()
+
+var20 <- c()
+
+set.seed(1897)
+for(i in 1:10) {
+  stepsSample <- rbind(stepsSample, Data$steps[sample(dim(Data)[1],200)])
+  mean20[i] <- mean(stepsSample[i,])
+  var20[i] <- var(stetpsSample[i,])
+}
+
+# Lo mismo de antes, entre las mujeres
+
+# Media y varianza de Data$sleeptime con el conjunto de datos completo
+
+female <- Data[Data$Sex=="M",]
+
+mean(female$sleeptime)
+var(female$sleeptime)
+
+# Media y varianza de Data$sleeptime con muestras de 200
+# En el enunciado se utiliza el plural (muestras), pero no se 
+# especifica cuantas, por lo que hemos considerado hacer 10.
+
+stfSample <- c()
+
+meanf10 <- c()
+
+varf10 <- c()
+
+set.seed(1792)
+for(i in 1:10) {
+  stfSample <- rbind(stfSample, female$sleeptime[sample(dim(female)[1],200)])
+  meanf10[i] <- mean(stfSample[i,])
+  varf10[i] <- var(stfSample[i,])
+}
+
+# Lo mismo de antes, entre los varones
+
+# Media y varianza de Data$sleeptime con el conjunto de datos completo
+
+male <- Data[Data$Sex=="V",]
+
+mean(male$sleeptime)
+var(male$sleeptime)
+
+# Media y varianza de Data$sleeptime con muestras de 200
+# En el enunciado se utiliza el plural (muestras), pero no se 
+# especifica cuantas, por lo que hemos considerado hacer 10.
+
+stmSample <- c()
+
+meanm10 <- c()
+
+varm10 <- c()
+
+set.seed(1772)
+for(i in 1:10) {
+  stmSample <- rbind(stmSample, male$sleeptime[sample(dim(male)[1],200)])
+  meanm10[i] <- mean(stmSample[i,])
+  varm10[i] <- var(stmSample[i,])
+}
+
+# 2.2 Estimación por intervalos, una población
+
+# muestras de tamaño 200
+
+# IC del 90% para media con varianza desconocida 
+# Parámetro: Data$sleeptime
+
+ic90st <- c()
+
+ic90st <- rbind(ic90st, Data$sleeptime[sample(dim(Data)[1],200)])
+meanic90st <- mean(ic90st)
+sic90st <- sqrt(var(ic90st[1:200]))
+
+std_err_IC90st <- qt(0.05,199,lower.tail = F)*sic90st/sqrt(dim(ic90st)[2])
+
+mediaIC90max_st <- meanic90st + std_err_IC90st
+mediaIC90min_st <- meanic90st - std_err_IC90st
+
+# Parámetro: Data$steps
+
+ic90steps <- c()
+
+ic90steps <- rbind(ic90steps, Data$steps[sample(dim(Data)[1],200)])
+meanic90steps <- mean(ic90steps)
+sic90steps <- sqrt(var(ic90steps[1:200]))
+
+std_err_IC90steps <- qt(0.05,199,lower.tail = F)*sic90steps/sqrt(dim(ic90steps)[2])
+
+mediaIC90max_steps <- meanic90steps + std_err_IC90steps
+mediaIC90min_steps <- meanic90steps - std_err_IC90steps
+
+# IC del 95% para media con varianza desconocida 
+# Parámetro: Data$sleeptime
+
+ic95st <- c()
+
+ic95st <- rbind(ic95st, Data$sleeptime[sample(dim(Data)[1],200)])
+meanic95st <- mean(ic95st)
+sic95st <- sqrt(var(ic95st[1:200]))
+
+std_err_IC95st <- qt(0.025,199,lower.tail = F)*sic95st/sqrt(dim(ic95st)[2])
+
+mediaIC95max_st <- meanic95st + std_err_IC95st
+mediaIC95min_st <- meanic95st - std_err_IC95st
+
+# Parámetro: Data$steps
+
+ic95steps <- c()
+
+ic95steps <- rbind(ic95steps, Data$steps[sample(dim(Data)[1],200)])
+meanic95steps <- mean(ic95steps)
+sic95steps <- sqrt(var(ic95steps[1:200]))
+
+std_err_IC95steps <- qt(0.025,199,lower.tail = F)*sic95steps/sqrt(dim(ic95steps)[2])
+
+mediaIC95max_steps <- meanic95steps + std_err_IC95steps
+mediaIC95min_steps <- meanic95steps - std_err_IC95steps
+
+# IC del 99% para media con varianza desconocida 
+# Parámetro: Data$sleeptime
+
+ic99st <- c()
+
+ic99st <- rbind(ic99st, Data$sleeptime[sample(dim(Data)[1],200)])
+meanic99st <- mean(ic99st)
+sic99st <- sqrt(var(ic99st[1:200]))
+
+std_err_IC99st <- qt(0.005,199,lower.tail = F)*sic99st/sqrt(dim(ic99st)[2])
+
+mediaIC99max_st <- meanic99st + std_err_IC99st
+mediaIC99min_st <- meanic99st - std_err_IC99st
+
+# Parámetro: Data$steps
+
+ic99steps <- c()
+
+ic99steps <- rbind(ic99steps, Data$steps[sample(dim(Data)[1],200)])
+meanic99steps <- mean(ic99steps)
+sic99steps <- sqrt(var(ic99steps[1:200]))
+
+std_err_IC99steps <- qt(0.005,199,lower.tail = F)*sic99steps/sqrt(dim(ic99steps)[2])
+
+mediaIC99max_steps <- meanic99steps + std_err_IC99steps
+mediaIC99min_steps <- meanic99steps - std_err_IC99steps
+
+# IC del 90% para media con varianza conocida
+# z (multiplicador de confianza) = 1.645
+# Parámetro: Data$sleeptime
+
+ic90st <- c()
+
+ic90st <- rbind(ic90st, Data$sleeptime[sample(dim(Data)[1],200)])
+meanic90st <- mean(ic90st)
+varic90st <- var(ic90st[1:200])
+zIC90 <- 1.645
+
+std_err_IC90st <- zIC90*varic90st/sqrt(dim(ic90st)[2])
+
+mediaIC90max_st <- meanic90st + std_err_IC90st
+mediaIC90min_st <- meanic90st - std_err_IC90st
+
+# Parámetro: Data$steps
+
+ic90steps <- c()
+
+ic90steps <- rbind(ic90steps, Data$steps[sample(dim(Data)[1],200)])
+meanic90steps <- mean(ic90steps)
+varic90steps <- var(ic90steps[1:200])
+zIC90 <- 1.645
+
+std_err_IC90steps <- zIC90*varic90steps/sqrt(dim(ic90steps)[2])
+
+mediaIC90max_steps <- meanic90steps + std_err_IC90steps
+mediaIC90min_steps <- meanic90steps - std_err_IC90steps
+
+# IC del 95% para media con varianza conocida 
+# z (multiplicador de confianza) = 2
+# Parámetro: Data$sleeptime
+
+ic95st <- c()
+
+ic95st <- rbind(ic95st, Data$sleeptime[sample(dim(Data)[1],200)])
+meanic95st <- mean(ic95st)
+varic95st <- var(ic95st[1:200])
+zIC95 <- 2
+
+std_err_IC95st <- zIC95*varic95st/sqrt(dim(ic95st)[2])
+
+mediaIC95max_st <- meanic95st + std_err_IC95st
+mediaIC95min_st <- meanic95st - std_err_IC95st
+
+# Parámetro: Data$steps
+
+ic95steps <- c()
+
+ic95steps <- rbind(ic95steps, Data$steps[sample(dim(Data)[1],200)])
+meanic95steps <- mean(ic95steps)
+varic95steps <- var(ic95steps[1:200])
+z95IC <- 2
+
+std_err_IC95steps <- zIC95*varic95steps/sqrt(dim(ic95steps)[2])
+
+mediaIC95max_steps <- meanic95steps + std_err_IC95steps
+mediaIC95min_steps <- meanic95steps - std_err_IC95steps
+
+# IC del 99% para media con varianza conocida 
+# z (multiplicador de confianza) = 2.576
+# Parámetro: Data$sleeptime
+
+ic99st <- c()
+
+ic99st <- rbind(ic99st, Data$sleeptime[sample(dim(Data)[1],200)])
+meanic99st <- mean(ic99st)
+varic99st <- var(ic99st[1:200])
+zIC99 <- 2.576
+
+std_err_IC99st <- zIC99*varic99st/sqrt(dim(ic99st)[2])
+
+mediaIC99max_st <- meanic99st + std_err_IC99st
+mediaIC99min_st <- meanic99st - std_err_IC99st
+
+# Parámetro: Data$steps
+
+ic99steps <- c()
+
+ic99steps <- rbind(ic99steps, Data$steps[sample(dim(Data)[1],200)])
+meanic99steps <- mean(ic99steps)
+varic99steps <- var(ic99steps[1:200])
+zIC99 <- 2.576
+
+std_err_IC99steps <- zIC99*varic99steps/sqrt(dim(ic99steps)[2])
+
+mediaIC99max_steps <- meanic99steps + std_err_IC99steps
+mediaIC99min_steps <- meanic99steps - std_err_IC99steps
+
+# IC del 90% para varianza
+# Parámetro: Data$sleeptime
+
+ic90st2 <- c()
+
+ic90st2 <- rbind(ic90st2, Data$sleeptime[sample(dim(Data)[1],200)])
+s2IC90st <- var(ic90st2[1:200])
+
+minIC90st2 <- (199*s2IC90st)/qchisq(0.05,199,lower.tail = FALSE)
+maxIC90st2 <- (199*s2IC90st)/qchisq(0.95,199,lower.tail = FALSE)
+
+# Parámetro: Data$steps
+
+ic90steps2 <- c()
+
+ic90steps2 <- rbind(ic90steps2, Data$steps[sample(dim(Data)[1],200)])
+s2IC90steps <- var(ic90steps2[1:200])
+
+minIC90steps2 <- (199*s2IC90steps)/qchisq(0.05,199,lower.tail = FALSE)
+maxIC90steps2 <- (199*s2IC90steps)/qchisq(0.95,199,lower.tail = FALSE)
+
+# IC del 95% para varianza
+# Parámetro: Data$sleeptime
+
+ic95st2 <- c()
+
+ic95st2 <- rbind(ic95st2, Data$sleeptime[sample(dim(Data)[1],200)])
+s2IC95st <- var(ic95st2[1:200])
+
+minIC95st2 <- (199*s2IC95st)/qchisq(0.025,199,lower.tail = FALSE)
+maxIC95st2 <- (199*s2IC95st)/qchisq(0.975,199,lower.tail = FALSE)
+
+# Parámetro: Data$steps
+
+ic95steps2 <- c()
+
+ic95steps2 <- rbind(ic95steps2, Data$steps[sample(dim(Data)[1],200)])
+s2IC95steps <- var(ic95steps2[1:200])
+
+minIC95steps2 <- (199*s2IC90steps)/qchisq(0.025,199,lower.tail = FALSE)
+maxIC95steps2 <- (199*s2IC90steps)/qchisq(0.975,199,lower.tail = FALSE)
+
+# IC del 99% para varianza
+# Parámetro: Data$sleeptime
+
+ic99st2 <- c()
+
+ic99st2 <- rbind(ic99st2, Data$sleeptime[sample(dim(Data)[1],200)])
+s2IC99st <- var(ic99st2[1:200])
+
+minIC99st2 <- (199*s2IC99st)/qchisq(0.005,199,lower.tail = FALSE)
+maxIC99st2 <- (199*s2IC99st)/qchisq(0.995,199,lower.tail = FALSE)
+
+# Parámetro: Data$steps
+
+ic99steps2 <- c()
+
+ic99steps2 <- rbind(ic99steps2, Data$steps[sample(dim(Data)[1],200)])
+s2IC99steps <- var(ic99steps2[1:200])
+
+minIC99steps2 <- (199*s2IC99steps)/qchisq(0.005,199,lower.tail = FALSE)
+maxIC99steps2 <- (199*s2IC99steps)/qchisq(0.995,199,lower.tail = FALSE)
+
+# 2.3 Estimación por intervalos, dos poblaciones (M y V)
+
+male <- Data[Data$Sex=="V",]
+female <- Data[Data$Sex=="M",]
+
+# IC del 90% dif medias con varianza desconocida pero iguales
+# Parámetro: Data$sleeptime
+
+t.test(female$sleeptime,male$sleeptime,conf.level = 0.90,alternative = "greater",var.equal = TRUE)
+
+# Parámetro: Data$steps
+
+t.test(female$steps,male$steps,conf.level = 0.90,alternative = "greater",var.equal = TRUE)
+
+
+# IC del 95% dif medias con varianza desconocida pero iguales
+# Parámetro: Data$sleeptime
+
+t.test(female$sleeptime,male$sleeptime,conf.level = 0.95,alternative = "greater",var.equal = TRUE)
+
+# Parámetro: Data$steps
+
+t.test(female$steps,male$steps,conf.level = 0.95,alternative = "greater",var.equal = TRUE)
+
+# IC del 99% dif medias con varianza desconocida pero iguales
+# Parámetro: Data$sleeptime
+
+t.test(female$sleeptime,male$sleeptime,conf.level = 0.99,alternative = "greater",var.equal = TRUE)
+
+# Parámetro: Data$steps
+
+t.test(female$steps,male$steps,conf.level = 0.99,alternative = "greater",var.equal = TRUE)
+
+# IC del 90% dif medias con varianza desconocida y diferentes
+# Parámetro: Data$sleeptime
+
+t.test(female$sleeptime,male$sleeptime,conf.level = 0.90,alternative = "greater", var.equal = FALSE)
+
+# Parámetro: Data$steps
+
+t.test(female$steps,male$steps,conf.level = 0.90,alternative = "greater",var.equal = FALSE)
+
+# IC del 95% dif medias con varianza desconocida y diferentes
+# Parámetro: Data$sleeptime
+
+t.test(female$sleeptime,male$sleeptime,conf.level = 0.95,alternative = "greater", var.equal = FALSE)
+
+# Parámetro: Data$steps
+
+t.test(female$steps,male$steps,conf.level = 0.95,alternative = "greater",var.equal = FALSE)
+
+# IC del 99% dif medias con varianza desconocida y diferentes
+# Parámetro: Data$sleeptime
+
+t.test(female$sleeptime,male$sleeptime,conf.level = 0.99,alternative = "greater", var.equal = FALSE)
+
+# Parámetro: Data$steps
+
+t.test(female$steps,male$steps,conf.level = 0.99,alternative = "greater",var.equal = FALSE)
+
+# IC del 90% dif medias con varianza conocida
+# Parámetro: Data$sleeptime
+
+varfem_IC90st <- var(female$sleeptime)/dim(female)[1]
+varm_IC90st <- var(male$sleeptime)/dim(male)[1]
+
+lim_infIC90st <- mean(female$sleeptime) - mean(male$sleeptime) - qnorm((0.9+1)/2)*sqrt(varfem_IC90st+varm_IC90st)
+lim_supIC90st <- mean(female$sleeptime) - mean(male$sleeptime) + qnorm((0.9+1)/2)*sqrt(varfem_IC90st+varm_IC90st)
+
+# Parámetro: Data$steps
+
+varfem_IC90steps <- var(female$steps)/dim(female)[1]
+varm_IC90steps <- var(male$steps)/dim(male)[1]
+
+lim_infIC90steps <- mean(female$steps) - mean(male$steps) - qnorm((0.9+1)/2)*sqrt(varfem_IC90steps+varm_IC90steps)
+lim_supIC90steps <- mean(female$steps) - mean(male$steps) + qnorm((0.9+1)/2)*sqrt(varfem_IC90steps+varm_IC90steps)
+
+# IC del 95% dif medias con varianza conocida
+# Parámetro: Data$sleeptime
+
+varfem_IC95st <- var(female$sleeptime)/dim(female)[1]
+varm_IC95st <- var(male$sleeptime)/dim(male)[1]
+
+lim_infIC95st <- mean(female$sleeptime) - mean(male$sleeptime) - qnorm((0.95+1)/2)*sqrt(varfem_IC95st+varm_IC95st)
+lim_supIC95st <- mean(female$sleeptime) - mean(male$sleeptime) + qnorm((0.95+1)/2)*sqrt(varfem_IC95st+varm_IC95st)
+
+# Parámetro: Data$steps
+
+varfem_IC95steps <- var(female$steps)/dim(female)[1]
+varm_IC95steps <- var(male$steps)/dim(male)[1]
+
+lim_infIC95steps <- mean(female$steps) - mean(male$steps) - qnorm((0.95+1)/2)*sqrt(varfem_IC95steps+varm_IC95steps)
+lim_supIC95steps <- mean(female$steps) - mean(male$steps) + qnorm((0.95+1)/2)*sqrt(varfem_IC95steps+varm_IC95steps)
+
+# IC del 99% dif medias con varianza conocida
+# Parámetro: Data$sleeptime
+
+varfem_IC99st <- var(female$sleeptime)/dim(female)[1]
+varm_IC99st <- var(male$sleeptime)/dim(male)[1]
+
+lim_infIC99st <- mean(female$sleeptime) - mean(male$sleeptime) - qnorm((0.99+1)/2)*sqrt(varfem_IC99st+varm_IC99st)
+lim_supIC99st <- mean(female$sleeptime) - mean(male$sleeptime) + qnorm((0.99+1)/2)*sqrt(varfem_IC99st+varm_IC99st)
+
+# Parámetro: Data$steps
+
+varfem_IC99steps <- var(female$steps)/dim(female)[1]
+varm_IC99steps <- var(male$steps)/dim(male)[1]
+
+lim_infIC99steps <- mean(female$steps) - mean(male$steps) - qnorm((0.99+1)/2)*sqrt(varfem_IC99steps+varm_IC99steps)
+lim_supIC99steps <- mean(female$steps) - mean(male$steps) + qnorm((0.99+1)/2)*sqrt(varfem_IC99steps+varm_IC99steps)
+
+# IC del 90% para razón de varianzas
+# Parámetro Data$sleeptime
+
+lim_inf_razvar_IC90st <- (var(female$sleeptime)/var(male$sleeptime))*(1/qf(0.05,dim(female)[1],dim(male)[1],lower.tail = F))
+lim_sup_razvar_IC90st <- (var(female$sleeptime)/var(male$sleeptime))*qf(0.05,dim(male)[1],dim(female)[1],lower.tail = F)
+
+# Parámetro Data$steps
+
+lim_inf_razvar_IC90steps <- (var(female$steps)/var(male$steps))*(1/qf(0.05,dim(female)[1],dim(male)[1],lower.tail = F))
+lim_sup_razvar_IC90steps <- (var(female$steps)/var(male$steps))*qf(0.05,dim(male)[1],dim(female)[1],lower.tail = F)
+
+# IC del 95% para razón de varianzas
+# Parámetro Data$sleeptime
+
+lim_inf_razvar_IC95st <- (var(female$sleeptime)/var(male$sleeptime))*(1/qf(0.025,dim(female)[1],dim(male)[1],lower.tail = F))
+lim_sup_razvar_IC95st <- (var(female$sleeptime)/var(male$sleeptime))*qf(0.025,dim(male)[1],dim(female)[1],lower.tail = F)
+
+# Parámetro Data$steps
+
+lim_inf_razvar_IC95steps <- (var(female$steps)/var(male$steps))*(1/qf(0.025,dim(female)[1],dim(male)[1],lower.tail = F))
+lim_sup_razvar_IC95steps <- (var(female$steps)/var(male$steps))*qf(0.025,dim(male)[1],dim(female)[1],lower.tail = F)
+
+# IC del 99% para razón de varianzas
+# Parámetro Data$sleeptime
+
+lim_inf_razvar_IC99st <- (var(female$sleeptime)/var(male$sleeptime))*(1/qf(0.005,dim(female)[1],dim(male)[1],lower.tail = F))
+lim_sup_razvar_IC99st <- (var(female$sleeptime)/var(male$sleeptime))*qf(0.005,dim(male)[1],dim(female)[1],lower.tail = F)
+
+# Parámetro Data$steps
+
+lim_inf_razvar_IC99steps <- (var(female$steps)/var(male$steps))*(1/qf(0.005,dim(female)[1],dim(male)[1],lower.tail = F))
+lim_sup_razvar_IC99steps <- (var(female$steps)/var(male$steps))*qf(0.005,dim(male)[1],dim(female)[1],lower.tail = F)
+
+
+
+
