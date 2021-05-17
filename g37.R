@@ -857,6 +857,164 @@ lim_sup_razvar_IC99st <- (var(female$sleeptime)/var(male$sleeptime))*qf(0.005,di
 lim_inf_razvar_IC99steps <- (var(female$steps)/var(male$steps))*(1/qf(0.005,dim(female)[1],dim(male)[1],lower.tail = F))
 lim_sup_razvar_IC99steps <- (var(female$steps)/var(male$steps))*qf(0.005,dim(male)[1],dim(female)[1],lower.tail = F)
 
+# Idem con poblaciones generales
+# Muestra de tamaño 200
+
+male <- Data[Data$Sex=="V",]
+female <- Data[Data$Sex=="M",]
+
+fem200st <- c()
+fem200steps <- c()
+male200st <- c()
+male200steps <- c()
+
+fem200st <- rbind(fem200st, female$sleeptime[sample(dim(Data)[1],200)])
+fem200steps <- rbind(fem200steps, female$steps[sample(dim(Data)[1],200)])
+male200st <- rbind(male200st, male$sleeptime[sample(dim(Data)[1],200)])
+male200steps <- rbind(male200steps, male$steps[sample(dim(Data)[1],200)])
+
+# IC del 90% dif medias con varianza desconocida pero iguales
+# Parámetro: Data$sleeptime
+
+t.test(fem200st,male200st,conf.level = 0.90,alternative = "greater",var.equal = TRUE)
+
+# Parámetro: Data$steps
+
+t.test(fem200steps,male200steps,conf.level = 0.90,alternative = "greater",var.equal = TRUE)
+
+
+# IC del 95% dif medias con varianza desconocida pero iguales
+# Parámetro: Data$sleeptime
+
+t.test(fem200st,male200st,conf.level = 0.95,alternative = "greater",var.equal = TRUE)
+
+# Parámetro: Data$steps
+
+t.test(fem200steps,male200steps,conf.level = 0.95,alternative = "greater",var.equal = TRUE)
+
+# IC del 99% dif medias con varianza desconocida pero iguales
+# Parámetro: Data$sleeptime
+
+t.test(fem200st,male200st,conf.level = 0.99,alternative = "greater",var.equal = TRUE)
+
+# Parámetro: Data$steps
+
+t.test(fem200steps,male200steps,conf.level = 0.99,alternative = "greater",var.equal = TRUE)
+
+# IC del 90% dif medias con varianza desconocida y diferentes
+# Parámetro: Data$sleeptime
+
+t.test(fem200st,male200st,conf.level = 0.90,alternative = "greater", var.equal = FALSE)
+
+# Parámetro: Data$steps
+
+t.test(fem200steps,male200steps,conf.level = 0.90,alternative = "greater",var.equal = FALSE)
+
+# IC del 95% dif medias con varianza desconocida y diferentes
+# Parámetro: Data$sleeptime
+
+t.test(fem200st,male200st,conf.level = 0.95,alternative = "greater", var.equal = FALSE)
+
+# Parámetro: Data$steps
+
+t.test(fem200steps,male200steps,conf.level = 0.95,alternative = "greater",var.equal = FALSE)
+
+# IC del 99% dif medias con varianza desconocida y diferentes
+# Parámetro: Data$sleeptime
+
+t.test(fem200st,male200st,conf.level = 0.99,alternative = "greater", var.equal = FALSE)
+
+# Parámetro: Data$steps
+
+t.test(fem200steps,male200steps,conf.level = 0.99,alternative = "greater",var.equal = FALSE)
+
+# IC del 90% dif medias con varianza conocida
+# Parámetro: Data$sleeptime
+
+varfem_IC90st <- var(fem200st)/200
+varm_IC90st <- var(male200st)/200
+
+lim_infIC90st <- mean(fem200st) - mean(male200st) - qnorm((0.9+1)/2)*sqrt(varfem_IC90st+varm_IC90st)
+lim_supIC90st <- mean(fem200st) - mean(male200st) + qnorm((0.9+1)/2)*sqrt(varfem_IC90st+varm_IC90st)
+
+# Parámetro: Data$steps
+
+varfem_IC90steps <- var(fem200steps)/200
+varm_IC90steps <- var(male200steps)/200
+
+lim_infIC90steps <- mean(fem200steps) - mean(male200steps) - qnorm((0.9+1)/2)*sqrt(varfem_IC90steps+varm_IC90steps)
+lim_supIC90steps <- mean(fem200steps) - mean(male200steps) + qnorm((0.9+1)/2)*sqrt(varfem_IC90steps+varm_IC90steps)
+
+# IC del 95% dif medias con varianza conocida
+# Parámetro: Data$sleeptime
+
+varfem_IC95st <- var(fem200st)/200
+varm_IC95st <- var(male200st)/200
+
+lim_infIC95st <- mean(fem200st) - mean(male200st) - qnorm((0.95+1)/2)*sqrt(varfem_IC95st+varm_IC95st)
+lim_supIC95st <- mean(fem200st) - mean(male200st) + qnorm((0.95+1)/2)*sqrt(varfem_IC95st+varm_IC95st)
+
+# Parámetro: Data$steps
+
+varfem_IC95steps <- var(fem200steps)/200
+varm_IC95steps <- var(male200steps)/200
+
+lim_infIC95steps <- mean(fem200steps) - mean(male200steps) - qnorm((0.95+1)/2)*sqrt(varfem_IC95steps+varm_IC95steps)
+lim_supIC95steps <- mean(fem200steps) - mean(male200steps) + qnorm((0.95+1)/2)*sqrt(varfem_IC95steps+varm_IC95steps)
+
+# IC del 99% dif medias con varianza conocida
+# Parámetro: Data$sleeptime
+
+varfem_IC99st <- var(fem200st)/200
+varm_IC99st <- var(male200st)/200
+
+lim_infIC99st <- mean(fem200st) - mean(male200st) - qnorm((0.99+1)/2)*sqrt(varfem_IC99st+varm_IC99st)
+lim_supIC99st <- mean(fem200st) - mean(male200st) + qnorm((0.99+1)/2)*sqrt(varfem_IC99st+varm_IC99st)
+
+# Parámetro: Data$steps
+
+varfem_IC99steps <- var(fem200steps)/200
+varm_IC99steps <- var(male200steps)/200
+
+lim_infIC99steps <- mean(fem200steps) - mean(male200steps) - qnorm((0.99+1)/2)*sqrt(varfem_IC99steps+varm_IC99steps)
+lim_supIC99steps <- mean(fem200steps) - mean(male200steps) + qnorm((0.99+1)/2)*sqrt(varfem_IC99steps+varm_IC99steps)
+
+# IC del 90% para razón de varianzas
+# Parámetro Data$sleeptime
+
+lim_inf_razvar_IC90st <- (var(fem200st)/var(male200st))*(1/qf(0.05,200,200,lower.tail = F))
+lim_sup_razvar_IC90st <- (var(fem200st)/var(male200st))*qf(0.05,200,200,lower.tail = F)
+
+# Parámetro Data$steps
+
+lim_inf_razvar_IC90steps <- (var(fem200steps)/var(male200steps))*(1/qf(0.05,200,200,lower.tail = F))
+lim_sup_razvar_IC90steps <- (var(fem200steps)/var(male200steps))*qf(0.05,200,200,lower.tail = F)
+
+# IC del 95% para razón de varianzas
+# Parámetro Data$sleeptime
+
+lim_inf_razvar_IC95st <- (var(fem200st)/var(male200st))*(1/qf(0.025,200,200,lower.tail = F))
+lim_sup_razvar_IC95st <- (var(fem200st)/var(male200st))*qf(0.025,200,200,lower.tail = F)
+
+# Parámetro Data$steps
+
+lim_inf_razvar_IC95steps <- (var(fem200steps)/var(male200steps))*(1/qf(0.025,200,200,lower.tail = F))
+lim_sup_razvar_IC95steps <- (var(fem200steps)/var(male200steps))*qf(0.025,200,200,lower.tail = F)
+
+# IC del 99% para razón de varianzas
+# Parámetro Data$sleeptime
+
+lim_inf_razvar_IC99st <- (var(fem200st)/var(male200st))*(1/qf(0.005,200,200,lower.tail = F))
+lim_sup_razvar_IC99st <- (var(fem200st)/var(male200st))*qf(0.005,200,200,lower.tail = F)
+
+# Parámetro Data$steps
+
+lim_inf_razvar_IC99steps <- (var(fem200steps)/var(male200steps))*(1/qf(0.005,200,200,lower.tail = F))
+lim_sup_razvar_IC99steps <- (var(fem200steps)/var(male200steps))*qf(0.005,200,200,lower.tail = F)
+
+
+
+
 
 
 
