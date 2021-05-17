@@ -377,7 +377,11 @@ legend(x="topright", legend = c("Grupo de 30", "Grupo de 50", "Grupo de 100", "V
 
 # Parte 2.3 Manuel
 set.seed(2021)
-freqs = table(Data$Nation)
-x = seq(0, 1, 0.01)
-bdist <- beta(a = 5, b = 10)
-plot(x, dbeta(x, 5, 10))
+sample200 = Data[sample(dim(Data)[1], 200),]
+sample.proports <- table(sample200$Nation)/200
+nE <- sample.proports["SP"]
+x = seq(0, 1, 0.001)
+betaPriori = beta(5, 10)
+betaPosteriori = beta(5 +nE, 10 + 1)
+prop.test(x = nE, n = 1)$conf.int
+
