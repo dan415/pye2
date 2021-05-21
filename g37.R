@@ -761,60 +761,188 @@ maxIC99steps2 <- (199*s2IC99steps)/qchisq(0.995,199,lower.tail = FALSE)
 male <- Data[Data$Sex=="V",]
 female <- Data[Data$Sex=="M",]
 
+tM <- dim(male)[1]
+tF <- dim(female)[1]
+
 # IC del 90% dif medias con varianza desconocida pero iguales
 # Parámetro: Data$sleeptime
 
-t.test(female$sleeptime,male$sleeptime,conf.level = 0.90,alternative = "greater",var.equal = TRUE)
+meanic90stF <- mean(female$sleeptime)
+meanic90stM <- mean(male$sleeptime)
+meanic90st <- meanic90stF - meanic90stM
+spic90st <- sqrt(((tF-1)*var(female$sleeptime)+(tM-1)*var(male$sleeptime))/tF+tM-2)
+
+
+std_err_IC90st <- qt(0.05,tM+tF-2,lower.tail = F)*spic90st*sqrt(1/tF+1/tM)
+
+mediaIC90max_st <- meanic90st + std_err_IC90st
+mediaIC90min_st <- meanic90st - std_err_IC90st
 
 # Parámetro: Data$steps
 
-t.test(female$steps,male$steps,conf.level = 0.90,alternative = "greater",var.equal = TRUE)
+meanic90stepsF <- mean(female$steps)
+meanic90stepsM <- mean(male$steps)
+meanic90steps <- meanic90stepsF - meanic90stepsM
+spic90steps <- sqrt(((tF-1)*var(female$steps)+(tM-1)*var(male$steps))/tF+tM-2)
+
+
+std_err_IC90steps <- qt(0.05,tM+tF-2,lower.tail = F)*spic90steps*sqrt(1/tF+1/tM)
+
+mediaIC90max_steps <- meanic90steps + std_err_IC90steps
+mediaIC90min_steps <- meanic90steps - std_err_IC90steps
 
 
 # IC del 95% dif medias con varianza desconocida pero iguales
 # Parámetro: Data$sleeptime
 
-t.test(female$sleeptime,male$sleeptime,conf.level = 0.95,alternative = "greater",var.equal = TRUE)
+meanic95stF <- mean(female$sleeptime)
+meanic95stM <- mean(male$sleeptime)
+meanic95st <- meanic95stF - meanic95stM
+spic95st <- sqrt(((tF-1)*var(female$sleeptime)+(tM-1)*var(male$sleeptime))/tF+tM-2)
+
+
+std_err_IC95st <- qt(0.025,tM+tF-2,lower.tail = F)*spic95st*sqrt(1/tF+1/tM)
+
+mediaIC95max_st <- meanic95st + std_err_IC95st
+mediaIC95min_st <- meanic95st - std_err_IC95st
 
 # Parámetro: Data$steps
 
-t.test(female$steps,male$steps,conf.level = 0.95,alternative = "greater",var.equal = TRUE)
+meanic95stepsF <- mean(female$steps)
+meanic95stepsM <- mean(male$steps)
+meanic95steps <- meanic95stepsF - meanic95stepsM
+spic95steps <- sqrt(((tF-1)*var(female$steps)+(tM-1)*var(male$steps))/tF+tM-2)
+
+
+std_err_IC95steps <- qt(0.025,tM+tF-2,lower.tail = F)*spic95steps*sqrt(1/tF+1/tM)
+
+mediaIC95max_steps <- meanic95steps + std_err_IC95steps
+mediaIC95min_steps <- meanic95steps - std_err_IC95steps
 
 # IC del 99% dif medias con varianza desconocida pero iguales
 # Parámetro: Data$sleeptime
 
-t.test(female$sleeptime,male$sleeptime,conf.level = 0.99,alternative = "greater",var.equal = TRUE)
+meanic99stF <- mean(female$sleeptime)
+meanic99stM <- mean(male$sleeptime)
+meanic99st <- meanic99stF - meanic99stM
+spic99st <- sqrt(((tF-1)*var(female$sleeptime)+(tM-1)*var(male$sleeptime))/tF+tM-2)
+
+
+std_err_IC99st <- qt(0.005,tM+tF-2,lower.tail = F)*spic99st*sqrt(1/tF+1/tM)
+
+mediaIC99max_st <- meanic99st + std_err_IC99st
+mediaIC99min_st <- meanic99st - std_err_IC99st
 
 # Parámetro: Data$steps
 
-t.test(female$steps,male$steps,conf.level = 0.99,alternative = "greater",var.equal = TRUE)
+meanic99stepsF <- mean(female$steps)
+meanic99stepsM <- mean(male$steps)
+meanic99steps <- meanic99stepsF - meanic90stepsM
+spic99steps <- sqrt(((tF-1)*var(female$steps)+(tM-1)*var(male$steps))/tF+tM-2)
+
+
+std_err_IC99steps <- qt(0.005,tM+tF-2,lower.tail = F)*spic99steps*sqrt(1/tF+1/tM)
+
+mediaIC99max_steps <- meanic99steps + std_err_IC99steps
+mediaIC99min_steps <- meanic99steps - std_err_IC99steps
 
 # IC del 90% dif medias con varianza desconocida y diferentes
+
+Afemst <- var(female$sleeptime)/tF
+Bmalest <- var(male$sleeptime)/tM
+Afemsteps <- var(female$steps)/tF
+Bmalesteps <- var(male$steps)/tM
+
 # Parámetro: Data$sleeptime
 
-t.test(female$sleeptime,male$sleeptime,conf.level = 0.90,alternative = "greater", var.equal = FALSE)
+meanic90stF <- mean(female$sleeptime)
+meanic90stM <- mean(male$sleeptime)
+meanic90st <- meanic90stF - meanic90stM
 
+num_delta <- ((tM-1)*Afemst-(tF-1)*Bmalest)^2
+den_delta <- (tM-1)*Afemst^2+(tF-1)*Bmalest^2
+delta <- num_delta/den_delta
+
+std_err_IC90st <- qt(0.05,tM+tF-2-delta,lower.tail = F)*sqrt(Afemst+Bmalest)
+
+mediaIC90max_st <- meanic90st + std_err_IC90st
+mediaIC90min_st <- meanic90st - std_err_IC90st
 # Parámetro: Data$steps
 
-t.test(female$steps,male$steps,conf.level = 0.90,alternative = "greater",var.equal = FALSE)
+meanic90stepsF <- mean(female$steps)
+meanic90stepsM <- mean(male$steps)
+meanic90steps <- meanic90stepsF - meanic90stepsM
+
+num_delta <- ((tM-1)*Afemsteps-(tF-1)*Bmalesteps)^2
+den_delta <- (tM-1)*Afemsteps^2+(tF-1)*Bmalesteps^2
+delta <- num_delta/den_delta
+
+std_err_IC90steps <- qt(0.05,tM+tF-2-delta,lower.tail = F)*sqrt(Afemsteps+Bmalesteps)
+
+mediaIC90max_steps <- meanic90steps + std_err_IC90steps
+mediaIC90min_steps <- meanic90steps - std_err_IC90steps
 
 # IC del 95% dif medias con varianza desconocida y diferentes
 # Parámetro: Data$sleeptime
 
-t.test(female$sleeptime,male$sleeptime,conf.level = 0.95,alternative = "greater", var.equal = FALSE)
+meanic95stF <- mean(female$sleeptime)
+meanic95stM <- mean(male$sleeptime)
+meanic95st <- meanic95stF - meanic95stM
+
+num_delta <- ((tM-1)*Afemst-(tF-1)*Bmalest)^2
+den_delta <- (tM-1)*Afemst^2+(tF-1)*Bmalest^2
+delta <- num_delta/den_delta
+
+std_err_IC95st <- qt(0.025,tM+tF-2-delta,lower.tail = F)*sqrt(Afemst+Bmalest)
+
+mediaIC95max_st <- meanic95st + std_err_IC95st
+mediaIC95min_st <- meanic95st - std_err_IC95st
 
 # Parámetro: Data$steps
 
-t.test(female$steps,male$steps,conf.level = 0.95,alternative = "greater",var.equal = FALSE)
+meanic95stepsF <- mean(female$steps)
+meanic95stepsM <- mean(male$steps)
+meanic95steps <- meanic95stepsF - meanic95stepsM
+
+num_delta <- ((tM-1)*Afemsteps-(tF-1)*Bmalesteps)^2
+den_delta <- (tM-1)*Afemsteps^2+(tF-1)*Bmalesteps^2
+delta <- num_delta/den_delta
+
+std_err_IC95steps <- qt(0.025,tM+tF-2-delta,lower.tail = F)*sqrt(Afemsteps+Bmalesteps)
+
+mediaIC95max_steps <- meanic95steps + std_err_IC95steps
+mediaIC95min_steps <- meanic95steps - std_err_IC95steps
 
 # IC del 99% dif medias con varianza desconocida y diferentes
 # Parámetro: Data$sleeptime
 
-t.test(female$sleeptime,male$sleeptime,conf.level = 0.99,alternative = "greater", var.equal = FALSE)
+meanic99stF <- mean(female$sleeptime)
+meanic99stM <- mean(male$sleeptime)
+meanic99st <- meanic99stF - meanic99stM
+
+num_delta <- ((tM-1)*Afemst-(tF-1)*Bmalest)^2
+den_delta <- (tM-1)*Afemst^2+(tF-1)*Bmalest^2
+delta <- num_delta/den_delta
+
+std_err_IC99st <- qt(0.005,tM+tF-2-delta,lower.tail = F)*sqrt(Afemst+Bmalest)
+
+mediaIC99max_st <- meanic99st + std_err_IC99st
+mediaIC99min_st <- meanic99st - std_err_IC99st
 
 # Parámetro: Data$steps
 
-t.test(female$steps,male$steps,conf.level = 0.99,alternative = "greater",var.equal = FALSE)
+meanic99stepsF <- mean(female$steps)
+meanic99stepsM <- mean(male$steps)
+meanic99steps <- meanic99stepsF - meanic99stepsM
+
+num_delta <- ((tM-1)*Afemsteps-(tF-1)*Bmalesteps)^2
+den_delta <- (tM-1)*Afemsteps^2+(tF-1)*Bmalesteps^2
+delta <- num_delta/den_delta
+
+std_err_IC95steps <- qt(0.005,tM+tF-2-delta,lower.tail = F)*sqrt(Afemsteps+Bmalesteps)
+
+mediaIC99max_steps <- meanic99steps + std_err_IC99steps
+mediaIC99min_steps <- meanic99steps - std_err_IC99steps
 
 # IC del 90% dif medias con varianza conocida
 # Parámetro: Data$sleeptime
@@ -911,79 +1039,207 @@ fem200steps <- c()
 male200st <- c()
 male200steps <- c()
 
-fem200st <- rbind(fem200st, female$sleeptime[sample(dim(Data)[1],200)])
-fem200steps <- rbind(fem200steps, female$steps[sample(dim(Data)[1],200)])
-male200st <- rbind(male200st, male$sleeptime[sample(dim(Data)[1],200)])
-male200steps <- rbind(male200steps, male$steps[sample(dim(Data)[1],200)])
+fem200st <- rbind(fem200st, female$sleeptime[sample(dim(female)[1],200)])
+fem200steps <- rbind(fem200steps, female$steps[sample(dim(female)[1],200)])
+male200st <- rbind(male200st, male$sleeptime[sample(dim(male)[1],200)])
+male200steps <- rbind(male200steps, male$steps[sample(dim(male)[1],200)])
+
+tM <- 200
+tF <- 200
 
 # IC del 90% dif medias con varianza desconocida pero iguales
 # Parámetro: Data$sleeptime
 
-t.test(fem200st,male200st,conf.level = 0.90,alternative = "greater",var.equal = TRUE)
+meanic90stF <- mean(fem200st)
+meanic90stM <- mean(male200st)
+meanic90st <- meanic90stF - meanic90stM
+spic90st <- sqrt(((tF-1)*var(fem200st[1:200])+(tM-1)*var(male200st[1:200]))/tF+tM-2)
+
+
+std_err_IC90st <- qt(0.05,tM+tF-2,lower.tail = F)*spic90st*sqrt(1/tF+1/tM)
+
+mediaIC90max_st <- meanic90st + std_err_IC90st
+mediaIC90min_st <- meanic90st - std_err_IC90st
 
 # Parámetro: Data$steps
 
-t.test(fem200steps,male200steps,conf.level = 0.90,alternative = "greater",var.equal = TRUE)
+meanic90stepsF <- mean(fem200steps)
+meanic90stepsM <- mean(male200steps)
+meanic90steps <- meanic90stepsF - meanic90stepsM
+spic90steps <- sqrt(((tF-1)*var(fem200steps[1:200])+(tM-1)*var(male200steps[1:200]))/tF+tM-2)
+
+
+std_err_IC90steps <- qt(0.05,tM+tF-2,lower.tail = F)*spic90steps*sqrt(1/tF+1/tM)
+
+mediaIC90max_steps <- meanic90steps + std_err_IC90steps
+mediaIC90min_steps <- meanic90steps - std_err_IC90steps
 
 
 # IC del 95% dif medias con varianza desconocida pero iguales
 # Parámetro: Data$sleeptime
 
-t.test(fem200st,male200st,conf.level = 0.95,alternative = "greater",var.equal = TRUE)
+meanic95stF <- mean(fem200st)
+meanic95stM <- mean(male200st)
+meanic95st <- meanic95stF - meanic95stM
+spic95st <- sqrt(((tF-1)*var(fem200st[1:200])+(tM-1)*var(male200st[1:200]))/tF+tM-2)
+
+
+std_err_IC95st <- qt(0.025,tM+tF-2,lower.tail = F)*spic95st*sqrt(1/tF+1/tM)
+
+mediaIC95max_st <- meanic95st + std_err_IC95st
+mediaIC95min_st <- meanic95st - std_err_IC95st
 
 # Parámetro: Data$steps
 
-t.test(fem200steps,male200steps,conf.level = 0.95,alternative = "greater",var.equal = TRUE)
+meanic95stepsF <- mean(fem200steps)
+meanic95stepsM <- mean(male200steps)
+meanic95steps <- meanic95stepsF - meanic95stepsM
+spic95steps <- sqrt(((tF-1)*var(fem200st[1:200])+(tM-1)*var(male200steps[1:200]))/tF+tM-2)
+
+
+std_err_IC95steps <- qt(0.025,tM+tF-2,lower.tail = F)*spic95steps*sqrt(1/tF+1/tM)
+
+mediaIC95max_steps <- meanic95steps + std_err_IC95steps
+mediaIC95min_steps <- meanic95steps - std_err_IC95steps
 
 # IC del 99% dif medias con varianza desconocida pero iguales
 # Parámetro: Data$sleeptime
 
-t.test(fem200st,male200st,conf.level = 0.99,alternative = "greater",var.equal = TRUE)
+meanic99stF <- mean(fem200st)
+meanic99stM <- mean(male200st)
+meanic99st <- meanic99stF - meanic99stM
+spic99st <- sqrt(((tF-1)*var(fem200st[1:200])+(tM-1)*var(male200st[1:200]))/tF+tM-2)
+
+
+std_err_IC99st <- qt(0.005,tM+tF-2,lower.tail = F)*spic99st*sqrt(1/tF+1/tM)
+
+mediaIC99max_st <- meanic99st + std_err_IC99st
+mediaIC99min_st <- meanic99st - std_err_IC99st
 
 # Parámetro: Data$steps
 
-t.test(fem200steps,male200steps,conf.level = 0.99,alternative = "greater",var.equal = TRUE)
+meanic99stepsF <- mean(fem200steps)
+meanic99stepsM <- mean(male200steps)
+meanic99steps <- meanic99stepsF - meanic90stepsM
+spic99steps <- sqrt(((tF-1)*var(fem200steps[1:200])+(tM-1)*var(male200steps[1:200]))/tF+tM-2)
+
+
+std_err_IC99steps <- qt(0.005,tM+tF-2,lower.tail = F)*spic99steps*sqrt(1/tF+1/tM)
+
+mediaIC99max_steps <- meanic99steps + std_err_IC99steps
+mediaIC99min_steps <- meanic99steps - std_err_IC99steps
 
 # IC del 90% dif medias con varianza desconocida y diferentes
+
+Afemst <- var(fem200st[1:200])/tF
+Bmalest <- var(male200st[1:200])/tM
+Afemsteps <- var(fem200steps[1:200])/tF
+Bmalesteps <- var(male200steps[1:200])/tM
+
 # Parámetro: Data$sleeptime
 
-t.test(fem200st,male200st,conf.level = 0.90,alternative = "greater", var.equal = FALSE)
+meanic90stF <- mean(fem200st)
+meanic90stM <- mean(male200st)
+meanic90st <- meanic90stF - meanic90stM
 
+num_delta <- ((tM-1)*Afemst-(tF-1)*Bmalest)^2
+den_delta <- (tM-1)*Afemst^2+(tF-1)*Bmalest^2
+delta <- num_delta/den_delta
+
+std_err_IC90st <- qt(0.05,tM+tF-2-delta,lower.tail = F)*sqrt(Afemst+Bmalest)
+
+mediaIC90max_st <- meanic90st + std_err_IC90st
+mediaIC90min_st <- meanic90st - std_err_IC90st
 # Parámetro: Data$steps
 
-t.test(fem200steps,male200steps,conf.level = 0.90,alternative = "greater",var.equal = FALSE)
+meanic90stepsF <- mean(fem200steps)
+meanic90stepsM <- mean(male200steps)
+meanic90steps <- meanic90stepsF - meanic90stepsM
+
+num_delta <- ((tM-1)*Afemsteps-(tF-1)*Bmalesteps)^2
+den_delta <- (tM-1)*Afemsteps^2+(tF-1)*Bmalesteps^2
+delta <- num_delta/den_delta
+
+std_err_IC90steps <- qt(0.05,tM+tF-2-delta,lower.tail = F)*sqrt(Afemsteps+Bmalesteps)
+
+mediaIC90max_steps <- meanic90steps + std_err_IC90steps
+mediaIC90min_steps <- meanic90steps - std_err_IC90steps
 
 # IC del 95% dif medias con varianza desconocida y diferentes
 # Parámetro: Data$sleeptime
 
-t.test(fem200st,male200st,conf.level = 0.95,alternative = "greater", var.equal = FALSE)
+meanic95stF <- mean(fem200st)
+meanic95stM <- mean(male200st)
+meanic95st <- meanic95stF - meanic95stM
+
+num_delta <- ((tM-1)*Afemst-(tF-1)*Bmalest)^2
+den_delta <- (tM-1)*Afemst^2+(tF-1)*Bmalest^2
+delta <- num_delta/den_delta
+
+std_err_IC95st <- qt(0.025,tM+tF-2-delta,lower.tail = F)*sqrt(Afemst+Bmalest)
+
+mediaIC95max_st <- meanic95st + std_err_IC95st
+mediaIC95min_st <- meanic95st - std_err_IC95st
 
 # Parámetro: Data$steps
 
-t.test(fem200steps,male200steps,conf.level = 0.95,alternative = "greater",var.equal = FALSE)
+meanic95stepsF <- mean(fem200steps)
+meanic95stepsM <- mean(male200steps)
+meanic95steps <- meanic95stepsF - meanic95stepsM
+
+num_delta <- ((tM-1)*Afemsteps-(tF-1)*Bmalesteps)^2
+den_delta <- (tM-1)*Afemsteps^2+(tF-1)*Bmalesteps^2
+delta <- num_delta/den_delta
+
+std_err_IC95steps <- qt(0.025,tM+tF-2-delta,lower.tail = F)*sqrt(Afemsteps+Bmalesteps)
+
+mediaIC95max_steps <- meanic95steps + std_err_IC95steps
+mediaIC95min_steps <- meanic95steps - std_err_IC95steps
 
 # IC del 99% dif medias con varianza desconocida y diferentes
 # Parámetro: Data$sleeptime
 
-t.test(fem200st,male200st,conf.level = 0.99,alternative = "greater", var.equal = FALSE)
+meanic99stF <- mean(female$sleeptime)
+meanic99stM <- mean(male$sleeptime)
+meanic99st <- meanic99stF - meanic99stM
+
+num_delta <- ((tM-1)*Afemst-(tF-1)*Bmalest)^2
+den_delta <- (tM-1)*Afemst^2+(tF-1)*Bmalest^2
+delta <- num_delta/den_delta
+
+std_err_IC99st <- qt(0.005,tM+tF-2-delta,lower.tail = F)*sqrt(Afemst+Bmalest)
+
+mediaIC99max_st <- meanic99st + std_err_IC99st
+mediaIC99min_st <- meanic99st - std_err_IC99st
 
 # Parámetro: Data$steps
 
-t.test(fem200steps,male200steps,conf.level = 0.99,alternative = "greater",var.equal = FALSE)
+meanic99stepsF <- mean(female$steps)
+meanic99stepsM <- mean(male$steps)
+meanic99steps <- meanic99stepsF - meanic99stepsM
+
+num_delta <- ((tM-1)*Afemsteps-(tF-1)*Bmalesteps)^2
+den_delta <- (tM-1)*Afemsteps^2+(tF-1)*Bmalesteps^2
+delta <- num_delta/den_delta
+
+std_err_IC95steps <- qt(0.005,tM+tF-2-delta,lower.tail = F)*sqrt(Afemsteps+Bmalesteps)
+
+mediaIC99max_steps <- meanic99steps + std_err_IC99steps
+mediaIC99min_steps <- meanic99steps - std_err_IC99steps
 
 # IC del 90% dif medias con varianza conocida
 # Parámetro: Data$sleeptime
 
-varfem_IC90st <- var(fem200st)/200
-varm_IC90st <- var(male200st)/200
+varfem_IC90st <- var(fem200st[1:200])/200
+varm_IC90st <- var(male200st[1:200])/200
 
 lim_infIC90st <- mean(fem200st) - mean(male200st) - qnorm((0.9+1)/2)*sqrt(varfem_IC90st+varm_IC90st)
 lim_supIC90st <- mean(fem200st) - mean(male200st) + qnorm((0.9+1)/2)*sqrt(varfem_IC90st+varm_IC90st)
 
 # Parámetro: Data$steps
 
-varfem_IC90steps <- var(fem200steps)/200
-varm_IC90steps <- var(male200steps)/200
+varfem_IC90steps <- var(fem200steps[1:200])/200
+varm_IC90steps <- var(male200steps[1:200])/200
 
 lim_infIC90steps <- mean(fem200steps) - mean(male200steps) - qnorm((0.9+1)/2)*sqrt(varfem_IC90steps+varm_IC90steps)
 lim_supIC90steps <- mean(fem200steps) - mean(male200steps) + qnorm((0.9+1)/2)*sqrt(varfem_IC90steps+varm_IC90steps)
@@ -991,16 +1247,16 @@ lim_supIC90steps <- mean(fem200steps) - mean(male200steps) + qnorm((0.9+1)/2)*sq
 # IC del 95% dif medias con varianza conocida
 # Parámetro: Data$sleeptime
 
-varfem_IC95st <- var(fem200st)/200
-varm_IC95st <- var(male200st)/200
+varfem_IC95st <- var(fem200st[1:200])/200
+varm_IC95st <- var(male200st[1:200])/200
 
 lim_infIC95st <- mean(fem200st) - mean(male200st) - qnorm((0.95+1)/2)*sqrt(varfem_IC95st+varm_IC95st)
 lim_supIC95st <- mean(fem200st) - mean(male200st) + qnorm((0.95+1)/2)*sqrt(varfem_IC95st+varm_IC95st)
 
 # Parámetro: Data$steps
 
-varfem_IC95steps <- var(fem200steps)/200
-varm_IC95steps <- var(male200steps)/200
+varfem_IC95steps <- var(fem200steps[1:200])/200
+varm_IC95steps <- var(male200steps[1:200])/200
 
 lim_infIC95steps <- mean(fem200steps) - mean(male200steps) - qnorm((0.95+1)/2)*sqrt(varfem_IC95steps+varm_IC95steps)
 lim_supIC95steps <- mean(fem200steps) - mean(male200steps) + qnorm((0.95+1)/2)*sqrt(varfem_IC95steps+varm_IC95steps)
@@ -1008,16 +1264,16 @@ lim_supIC95steps <- mean(fem200steps) - mean(male200steps) + qnorm((0.95+1)/2)*s
 # IC del 99% dif medias con varianza conocida
 # Parámetro: Data$sleeptime
 
-varfem_IC99st <- var(fem200st)/200
-varm_IC99st <- var(male200st)/200
+varfem_IC99st <- var(fem200st[1:200])/200
+varm_IC99st <- var(male200st[1:200])/200
 
 lim_infIC99st <- mean(fem200st) - mean(male200st) - qnorm((0.99+1)/2)*sqrt(varfem_IC99st+varm_IC99st)
 lim_supIC99st <- mean(fem200st) - mean(male200st) + qnorm((0.99+1)/2)*sqrt(varfem_IC99st+varm_IC99st)
 
 # Parámetro: Data$steps
 
-varfem_IC99steps <- var(fem200steps)/200
-varm_IC99steps <- var(male200steps)/200
+varfem_IC99steps <- var(fem200steps[1:200])/200
+varm_IC99steps <- var(male200steps[1:200])/200
 
 lim_infIC99steps <- mean(fem200steps) - mean(male200steps) - qnorm((0.99+1)/2)*sqrt(varfem_IC99steps+varm_IC99steps)
 lim_supIC99steps <- mean(fem200steps) - mean(male200steps) + qnorm((0.99+1)/2)*sqrt(varfem_IC99steps+varm_IC99steps)
@@ -1025,35 +1281,35 @@ lim_supIC99steps <- mean(fem200steps) - mean(male200steps) + qnorm((0.99+1)/2)*s
 # IC del 90% para razón de varianzas
 # Parámetro Data$sleeptime
 
-lim_inf_razvar_IC90st <- (var(fem200st)/var(male200st))*(1/qf(0.05,200,200,lower.tail = F))
-lim_sup_razvar_IC90st <- (var(fem200st)/var(male200st))*qf(0.05,200,200,lower.tail = F)
+lim_inf_razvar_IC90st <- (var(fem200st[1:200])/var(male200st[1:200]))*(1/qf(0.05,200,200,lower.tail = F))
+lim_sup_razvar_IC90st <- (var(fem200st[1:200])/var(male200st[1:200]))*qf(0.05,200,200,lower.tail = F)
 
 # Parámetro Data$steps
 
-lim_inf_razvar_IC90steps <- (var(fem200steps)/var(male200steps))*(1/qf(0.05,200,200,lower.tail = F))
-lim_sup_razvar_IC90steps <- (var(fem200steps)/var(male200steps))*qf(0.05,200,200,lower.tail = F)
+lim_inf_razvar_IC90steps <- (var(fem200steps[1:200])/var(male200steps[1:200]))*(1/qf(0.05,200,200,lower.tail = F))
+lim_sup_razvar_IC90steps <- (var(fem200steps[1:200])/var(male200steps[1:200]))*qf(0.05,200,200,lower.tail = F)
 
 # IC del 95% para razón de varianzas
 # Parámetro Data$sleeptime
 
-lim_inf_razvar_IC95st <- (var(fem200st)/var(male200st))*(1/qf(0.025,200,200,lower.tail = F))
-lim_sup_razvar_IC95st <- (var(fem200st)/var(male200st))*qf(0.025,200,200,lower.tail = F)
+lim_inf_razvar_IC95st <- (var(fem200st[1:200])/var(male200st[1:200]))*(1/qf(0.025,200,200,lower.tail = F))
+lim_sup_razvar_IC95st <- (var(fem200st[1:200])/var(male200st[1:200]))*qf(0.025,200,200,lower.tail = F)
 
 # Parámetro Data$steps
 
-lim_inf_razvar_IC95steps <- (var(fem200steps)/var(male200steps))*(1/qf(0.025,200,200,lower.tail = F))
-lim_sup_razvar_IC95steps <- (var(fem200steps)/var(male200steps))*qf(0.025,200,200,lower.tail = F)
+lim_inf_razvar_IC95steps <- (var(fem200steps[1:200])/var(male200steps[1:200]))*(1/qf(0.025,200,200,lower.tail = F))
+lim_sup_razvar_IC95steps <- (var(fem200steps[1:200])/var(male200steps[1:200]))*qf(0.025,200,200,lower.tail = F)
 
 # IC del 99% para razón de varianzas
 # Parámetro Data$sleeptime
 
-lim_inf_razvar_IC99st <- (var(fem200st)/var(male200st))*(1/qf(0.005,200,200,lower.tail = F))
-lim_sup_razvar_IC99st <- (var(fem200st)/var(male200st))*qf(0.005,200,200,lower.tail = F)
+lim_inf_razvar_IC99st <- (var(fem200st[1:200])/var(male200st[1:200]))*(1/qf(0.005,200,200,lower.tail = F))
+lim_sup_razvar_IC99st <- (var(fem200st[1:200])/var(male200st[1:200]))*qf(0.005,200,200,lower.tail = F)
 
 # Parámetro Data$steps
 
-lim_inf_razvar_IC99steps <- (var(fem200steps)/var(male200steps))*(1/qf(0.005,200,200,lower.tail = F))
-lim_sup_razvar_IC99steps <- (var(fem200steps)/var(male200steps))*qf(0.005,200,200,lower.tail = F)
+lim_inf_razvar_IC99steps <- (var(fem200steps[1:200])/var(male200steps[1:200]))*(1/qf(0.005,200,200,lower.tail = F))
+lim_sup_razvar_IC99steps <- (var(fem200steps[1:200])/var(male200steps[1:200]))*qf(0.005,200,200,lower.tail = F)
 
 
 
