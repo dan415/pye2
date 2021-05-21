@@ -408,7 +408,7 @@ var(Data$steps)
 
 # Media y varianza de Data$steps con muestras de 200
 # En el enunciado se utiliza el plural (muestras), pero no se 
-# especifica cuantas, por lo que hemos considerado hacer 20.
+# especifica cuantas, por lo que hemos considerado hacer 10.
 
 stepsSample <- c()
 
@@ -420,7 +420,7 @@ set.seed(1897)
 for(i in 1:10) {
   stepsSample <- rbind(stepsSample, Data$steps[sample(dim(Data)[1],200)])
   mean20[i] <- mean(stepsSample[i,])
-  var20[i] <- var(stetpsSample[i,])
+  var20[i] <- var(stepsSample[i,])
 }
 
 # Lo mismo de antes, entre las mujeres
@@ -449,6 +449,27 @@ for(i in 1:10) {
   varf10[i] <- var(stfSample[i,])
 }
 
+# Media y varianza de Data$steps con el conjunto de datos completo
+
+mean(female$steps)
+var(female$steps)
+
+# Media y varianza de Data$steps con muestras de 200
+# En el enunciado se utiliza el plural (muestras), pero no se 
+# especifica cuantas, por lo que hemos considerado hacer 10.
+
+stfSample <- c()
+
+meanf10 <- c()
+
+varf10 <- c()
+
+set.seed(1192)
+for(i in 1:10) {
+  stfSample <- rbind(stfSample, female$steps[sample(dim(female)[1],200)])
+  meanf10[i] <- mean(stfSample[i,])
+  varf10[i] <- var(stfSample[i,])
+}
 # Lo mismo de antes, entre los varones
 
 # Media y varianza de Data$sleeptime con el conjunto de datos completo
@@ -471,6 +492,28 @@ varm10 <- c()
 set.seed(1772)
 for(i in 1:10) {
   stmSample <- rbind(stmSample, male$sleeptime[sample(dim(male)[1],200)])
+  meanm10[i] <- mean(stmSample[i,])
+  varm10[i] <- var(stmSample[i,])
+}
+
+# Media y varianza de Data$steps con el conjunto de datos completo
+
+mean(male$steps)
+var(male$steps)
+
+# Media y varianza de Data$steps con muestras de 200
+# En el enunciado se utiliza el plural (muestras), pero no se 
+# especifica cuantas, por lo que hemos considerado hacer 10.
+
+stmSample <- c()
+
+meanm10 <- c()
+
+varm10 <- c()
+
+set.seed(1777)
+for(i in 1:10) {
+  stmSample <- rbind(stmSample, male$steps[sample(dim(male)[1],200)])
   meanm10[i] <- mean(stmSample[i,])
   varm10[i] <- var(stmSample[i,])
 }
