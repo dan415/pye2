@@ -377,11 +377,22 @@ legend(x="topright", legend = c("Grupo de 30", "Grupo de 50", "Grupo de 100", "V
 
 # Parte 2.3 Manuel
 set.seed(2021)
-sample200 = Data[sample(dim(Data)[1], 200),]
-sample.proports <- table(sample200$Nation)/200
+n = 200
+sample200 = Data[sample(dim(Data)[1], n),]
+sample.proports <- table(sample200$Nation)/n
 nE <- sample.proports["SP"]
-x = seq(0, 1, 0.001)
-betaPriori = beta(5, 10)
-betaPosteriori = beta(5 +nE, 10 + 1)
-prop.test(x = nE, n = 1)$conf.int
+alfa.post = 5 + nE
+beta.post = 10 + 1
+betaPosteriori = beta(alfa.post, beta.post)
 
+print("IC 95%")
+inf95 <- qbeta(0.025,alfa.post,beta.post)
+sup95 <- qbeta(0.975,alfa.post,beta.post)
+cat("IC al 95%  (",inf95,sup95,")\n")
+
+sample.height <- sample200[ sample200$Nation %in% c("SP","FR","IT"),]$height
+
+mu_0 = 170
+n0 = sd(sample.height)^2/7^2
+alpha = n/(n+n0)
+mu_p = alpha*mu_0+(1-alpha)*mean(sample.height)
