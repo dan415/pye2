@@ -284,49 +284,59 @@ mean30 <- c()
 mean50 <-  c()
 mean100 <- c()
 
-
 var30 <- c()
 var50 <-  c()
 var100 <- c()
 
-male <- Data[Data$Sex=="V",]
-female <- Data[Data$Sex=="M",]
+prop30 <- c()
+prop50 <-  c()
+prop100 <- c()
 
-popM30 <- c()
-popM50 <-  c()
-popM100 <- c()
+prop30V <- c()
+prop30F <- c()
 
-popF30 <- c()
-popF50 <-  c()
-popF100 <- c()
+prop50V <- c()
+prop50F <- c()
+
+prop100V <- c()
+prop100F <- c()
 
 set.seed(2021)
 for(i in 1:30) {
-  agemas30 <- rbind(agemas30, Data$Age[sample(dim(Data)[1],200)])
+  muestra30 <- sample(dim(Data)[1],200)
+  agemas30 <- rbind(agemas30, Data$Age[muestra30])
   mean30[i] <- mean(agemas30[i,])
   var30[i] <- var(agemas30[i,])
-  # propM30 <- male$Age[sample(dim(male)[1],30)]
-  # propF30 <- female$Age[sample(dim(female)[1],30)]
+  prop30 <- rbind(prop30, Data$Sex[muestra30])
+  prop30V[i] <- table(prop30[i,])["V"]/200
+  prop30F[i] <- table(prop30[i,])["M"]/200
 }
 
 set.seed(634)
 for(i in 1:50) {
-  agemas50 <- rbind(agemas50, Data$Age[sample(dim(Data)[1],200)])
+  muestra50 <- sample(dim(Data)[1],200)
+  agemas50 <- rbind(agemas50, Data$Age[muestra50])
   mean50[i] = mean(agemas50[i,])
   var50[i] = var(agemas50[i,])
-  # propM50 <- male$Age[sample(dim(male)[1],50)]
-  # propF50 <- female$Age[sample(dim(female)[1],50)]
+  prop50 <- rbind(prop50, Data$Sex[muestra50])
+  prop50V[i] <- table(prop50[i,])["V"]/200
+  prop50F[i] <- table(prop50[i,])["M"]/200
 }
+
 
 set.seed(1927)
 for(i in 1:100) {
-  agemas100 <- rbind(agemas100, Data$Age[sample(dim(Data)[1],200)])
+  muestra100 <- sample(dim(Data)[1],200)
+  agemas100 <- rbind(agemas100, Data$Age[muestra100])
   mean100[i] = mean(agemas100[i,])
   var100[i] = var(agemas100[i,])
-  # propM100 <- male$Age[sample(dim(male)[1],100)]
-  # propF100 <- female$Age[sample(dim(female)[1],100)]
+  prop100 <- rbind(prop100, Data$Sex[muestra100])
+  prop100V[i] <- table(prop100[i,])["V"]/200
+  prop100F[i] <- table(prop100[i,])["M"]/200
 }
 
+
+# MEAN
 par(mfrow=c(1,1))
 hist(mean30, freq=FALSE, breaks=10, main="Histograma de distribución de media muestral en grupo de tamaño 30", xlab="Mean", col="gold")
 hist(mean50, freq=FALSE, breaks=10, main="Histograma de distribución de media muestral en grupo de tamaño 50", xlab="Mean", col="red")
@@ -334,6 +344,7 @@ hist(mean100, freq=FALSE, breaks=10, main="Histograma de distribución de media 
 
 mean(Data$Age)
 var(Data$Age)
+
 
 boxplot(mean30, main="Distribución de media muestral en grupo de tamaño 30", col="gold")
 boxplot(mean50, main="Distribución de media muestral en grupo de tamaño 50", col="red")
@@ -351,6 +362,9 @@ lines(xmean, dnorm(xmean, normean50$estimate[1], normean50$estimate[2]), col="re
 lines(xmean, dnorm(xmean, normean100$estimate[1], normean100$estimate[2]), col="blue", lwd=1.5)
 abline(v=mean(Data$Age), col="green")
 legend(x="topright", legend = c("Grupo de 30", "Grupo de 50", "Grupo de 100", "Media de Age"), fill = c("gold", "red", "blue", "green"))
+
+
+# VAR 
 
 hist(var30, freq=FALSE, breaks=10,  main="Histograma de distribución de varianza muestral en grupo de tamaño 30", xlab="Varianza", col="gold")
 hist(var50, freq=FALSE,  breaks=10, main="Histograma de distribución de varianza muestral en grupo de tamaño 50", xlab="Varianza", col="red")
@@ -375,3 +389,51 @@ abline(v=var(Data$Age), col="green")
 legend(x="topright", legend = c("Grupo de 30", "Grupo de 50", "Grupo de 100", "Varianza de Age"), fill = c("gold", "red", "blue", "green"))
 
 
+#PROPORCION
+
+
+
+
+hist(prop30V,  main="Distribución de proporción muestral de hombres en grupo de tamaño 30", xlab="Proporción", col="gold")
+hist(prop50V, main="Distribución de proporción muestral de hombres en grupo de tamaño 50", xlab="Propoción", col="red")
+hist(prop100V, main="Distribución de proporción muestral de hombres, grupo de tamaño 100", xlab="Proporción", col="blue")
+
+hist(prop30F,  main="Distribución de proporción muestral de mujeres en grupo de tamaño 30", xlab="Proporción", col="gold")
+hist(prop50F, main="Distribución de proporción muestral de mujeres en grupo de tamaño 50", xlab="Propoción", col="red")
+hist(prop100F, main="Distribución de proporción muestral de mujeres en grupo de tamaño 100", xlab="Proporción", col="blue")
+
+boxplot(prop30V,  main="Distribución de proporción muestral de hombres en grupo de tamaño 30", xlab="Proporción", col="gold")
+boxplot(prop50V, main="Distribución de proporción muestral de hombres en grupo de tamaño 50", xlab="Propoción", col="red")
+boxplot(prop100V, main="Distribución de proporción muestral de hombres en grupo de tamaño 100", xlab="Proporción", col="blue")
+
+boxplot(prop30F,  main="Distribución de proporción muestral de mujeres en grupo de tamaño 30", xlab="Proporción", col="gold")
+boxplot(prop50F, main="Distribución de proporción muestral de mujeres en grupo de tamaño 50", xlab="Propoción", col="red")
+boxplot(prop100F, main="Distribución de proporción muestral de mujeres en grupo de tamaño 100", xlab="Proporción", col="blue")
+
+normpropv30 <-  MASS::fitdistr(prop30V, "normal")
+normpropv50 <-  MASS::fitdistr(prop50V, "normal")
+normpropv100 <-  MASS::fitdistr(prop100V, "normal")
+
+normpropf30 <-  MASS::fitdistr(prop30F, "normal")
+normpropf50 <-  MASS::fitdistr(prop50F, "normal")
+normpropf100 <-  MASS::fitdistr(prop100F, "normal")
+
+par(mfrow=c(1,1))
+xprop = seq(0.4, 0.6,by=0.01)
+plot(xprop, dnorm(xprop, normpropv30$estimate[1], normpropv30$estimate[2]),
+     type="l", col="gold", lwd=1.5, main="Distribución de la proporción de hombres muestral", xlab="proporción", ylab="Densidad")
+lines(xprop, dnorm(xprop, normpropv50$estimate[1], normpropv50$estimate[2]), col="red",lwd=1.5)
+lines(xprop, dnorm(xprop, normpropv100$estimate[1], normpropv100$estimate[2]), col="blue", lwd=1.5)
+abline(v=(table(Data$Sex)["V"]/length(Data$Sex)), col="green")
+legend(x="topright", legend = c("Grupo de 30", "Grupo de 50", "Grupo de 100", "Proporción de hombres"), fill = c("gold", "red", "blue", "green"))
+
+par(mfrow=c(1,1))
+xprop = seq(0.4, 0.6,by=0.01)
+plot(xprop, dnorm(xprop, normpropf30$estimate[1], normpropf30$estimate[2]),
+     type="l", col="gold", lwd=1.5, main="Distribución de la proporción de mujeres muestral", xlab="proporción", ylab="Densidad")
+lines(xprop, dnorm(xprop, normpropf50$estimate[1], normpropf50$estimate[2]), col="red",lwd=1.5)
+lines(xprop, dnorm(xprop, normpropf100$estimate[1], normpropf100$estimate[2]), col="blue", lwd=1.5)
+abline(v=(table(Data$Sex)["M"]/length(Data$Sex)), col="green")
+legend(x="topright", legend = c("Grupo de 30", "Grupo de 50", "Grupo de 100", "Proporción de mujeres"), fill = c("gold", "red", "blue", "green"))
+
+table(Data$Sex)/length(Data$Sex)
